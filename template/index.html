@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+    <title>Personal Library</title>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Personal Library</h1>
+        
+        <button class="add-book-btn" onclick="openAddBookModal()">+ Add New Book</button>
+        
+        <div class="books-grid" id="booksGrid">
+            <!-- Sample books - replace with your Go template data -->
+            <div class="book-card" data-book-id="1">
+                <div class="book-title">1984</div>
+                <div class="book-author">by George Orwell</div>
+                <div class="book-meta">
+                    <span>1949</span>
+                    <span>328 pages</span>
+                    <span>$12.99</span>
+                </div>
+                <span class="status-badge status-available">Available</span>
+                
+                <div class="book-actions">
+                    <button class="action-btn btn-view" onclick="viewBook(1)">View</button>
+                    <button class="action-btn btn-edit" onclick="editBook(1)">Edit</button>
+                    <button class="action-btn btn-delete" onclick="deleteBook(1)">Delete</button>
+                </div>
+            </div>
+            
+            <div class="book-card" data-book-id="2">
+                <div class="book-title">Pride and Prejudice</div>
+                <div class="book-author">by Jane Austen</div>
+                <div class="book-meta">
+                    <span>1813</span>
+                    <span>432 pages</span>
+                    <span>$9.99</span>
+                </div>
+                <span class="status-badge status-borrowed">Borrowed</span>
+                
+                <div class="book-actions">
+                    <button class="action-btn btn-view" onclick="viewBook(2)">View</button>
+                    <button class="action-btn btn-edit" onclick="editBook(2)">Edit</button>
+                    <button class="action-btn btn-delete" onclick="deleteBook(2)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Book Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Book Details</h2>
+                <button class="close-btn" onclick="closeModal('viewModal')">&times;</button>
+            </div>
+            <div class="book-details" id="bookDetails">
+                <!-- Book details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Book</h2>
+                <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
+            </div>
+            <form id="editBookForm">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="editTitle" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Author</label>
+                    <input type="text" class="form-input" id="editAuthor" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Genre</label>
+                    <select class="form-select" id="editGenre">
+                        <option value="fiction">Fiction</option>
+                        <option value="science-fiction">Science Fiction</option>
+                        <option value="romance">Romance</option>
+                        <option value="mystery">Mystery</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ISBN</label>
+                    <input type="text" class="form-input" id="editIsbn">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Publication Year</label>
+                    <input type="number" class="form-input" id="editYear" min="1000" max="2024">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pages</label>
+                    <input type="number" class="form-input" id="editPages" min="1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="editStatus">
+                        <option value="available">Available</option>
+                        <option value="borrowed">Borrowed</option>
+                        <option value="lost">Lost</option>
+                        <option value="damaged">Damaged</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Purchase Price</label>
+                    <input type="number" class="form-input" id="editPrice" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" id="editNotes" placeholder="Any additional notes..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('editModal')">Cancel</button>
+                    <button type="submit" class="primary-btn">
+                        <span class="loading" id="saveLoading" style="display: none;"></span>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="confirmation-dialog">
+                <div class="confirmation-icon">⚠️</div>
+                <div class="confirmation-message">
+                    Are you sure you want to delete "<span id="deleteBookTitle"></span>"?
+                    <br><br>
+                    <strong>This action cannot be undone.</strong>
+                </div>
+                <div class="form-actions">
+                    <button class="secondary-btn" onclick="closeModal('deleteModal')">Cancel</button>
+                    <button class="danger-btn" onclick="confirmDelete()">
+                        <span class="loading" id="deleteLoading" style="display: none;"></span>
+                        Delete Book
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="confirmation-dialog">
+                <div class="confirmation-icon">✅</div>
+                <div class="confirmation-message" id="successMessage">
+                    Action completed successfully!
+                </div>
+                <div class="form-actions">
+                    <button class="primary-btn" onclick="closeModal('successModal')">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
