@@ -63,6 +63,7 @@ func ListBooks(c *gin.Context) {
 func AddBook(c *gin.Context) {
 	var newBook model.Book
 	if err := c.BindJSON(&newBook); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
 	stmt, err := db.Prepare("INSERT INTO bookTable (title, author, summary, genre, publicate_year, pages, date_acquired, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
@@ -150,7 +151,7 @@ func UpdateBook(c *gin.Context) {
 
 	_, err = db.Exec(`UPDATE bookTable 
                       SET title=?, author=?, summary=?, genre=?, publicate_year=?, pages=?, date_acquired=?, status=?
-                      WHERE bookd_id=?`,
+                      WHERE book_id=?`,
 		oldBook.Title, oldBook.Author, oldBook.Summary, oldBook.Genre,
 		oldBook.PublicateYear, oldBook.Pages, oldBook.DateAcquired, oldBook.Status,
 		id)
