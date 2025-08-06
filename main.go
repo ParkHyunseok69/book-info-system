@@ -8,11 +8,21 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.GET("/books/:title", handler.ViewBook)
+	router.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
+	router.GET("/book/:id", handler.ViewBook)
 	router.GET("/books", handler.ListBooks)
-	router.POST("/books", handler.AddBook)
-	router.PUT("/books/:title", handler.UpdateBook)
-	router.DELETE("/books/:title", handler.DeleteBook)
+	router.POST("/book", handler.AddBook)
+	router.PUT("/book/:id", handler.UpdateBook)
+	router.DELETE("/book/:id", handler.DeleteBook)
 
 	router.Run("localhost:8080")
 }

@@ -6,9 +6,10 @@ type Book struct {
 	Author        string `json:"author"`
 	Summary       string `json:"summary"`
 	Genre         string `json:"genre"`
-	PublicateYear string `json:"publicate_year"`
+	PublicateYear string `json:"publication_year"`
 	Pages         int32  `json:"pages"`
 	DateAcquired  string `json:"date_acquired"`
+	Status        string `json:"status"`
 }
 
 type Author struct {

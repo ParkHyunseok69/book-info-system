@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
+    
     <title>Personal Library</title>
 </head>
 <body>
@@ -14,40 +14,7 @@
         <button class="add-book-btn" onclick="openAddBookModal()">+ Add New Book</button>
         
         <div class="books-grid" id="booksGrid">
-            <!-- Sample books - replace with your Go template data -->
-            <div class="book-card" data-book-id="1">
-                <div class="book-title">1984</div>
-                <div class="book-author">by George Orwell</div>
-                <div class="book-meta">
-                    <span>1949</span>
-                    <span>328 pages</span>
-                    <span>$12.99</span>
-                </div>
-                <span class="status-badge status-available">Available</span>
-                
-                <div class="book-actions">
-                    <button class="action-btn btn-view" onclick="viewBook(1)">View</button>
-                    <button class="action-btn btn-edit" onclick="editBook(1)">Edit</button>
-                    <button class="action-btn btn-delete" onclick="deleteBook(1)">Delete</button>
-                </div>
-            </div>
-            
-            <div class="book-card" data-book-id="2">
-                <div class="book-title">Pride and Prejudice</div>
-                <div class="book-author">by Jane Austen</div>
-                <div class="book-meta">
-                    <span>1813</span>
-                    <span>432 pages</span>
-                    <span>$9.99</span>
-                </div>
-                <span class="status-badge status-borrowed">Borrowed</span>
-                
-                <div class="book-actions">
-                    <button class="action-btn btn-view" onclick="viewBook(2)">View</button>
-                    <button class="action-btn btn-edit" onclick="editBook(2)">Edit</button>
-                    <button class="action-btn btn-delete" onclick="deleteBook(2)">Delete</button>
-                </div>
-            </div>
+            <!-- Book cards goes here -->
         </div>
     </div>
 
@@ -81,6 +48,10 @@
                     <input type="text" class="form-input" id="editAuthor" required>
                 </div>
                 <div class="form-group">
+                    <label class="form-label">Summary</label>
+                    <textarea class="form-textarea" id="editSummary" placeholder="Any summary..."></textarea>
+                </div>
+                <div class="form-group">
                     <label class="form-label">Genre</label>
                     <select class="form-select" id="editGenre">
                         <option value="fiction">Fiction</option>
@@ -90,34 +61,25 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">ISBN</label>
-                    <input type="text" class="form-input" id="editIsbn">
-                </div>
-                <div class="form-group">
                     <label class="form-label">Publication Year</label>
-                    <input type="number" class="form-input" id="editYear" min="1000" max="2024">
+                    <input type="text" class="form-input" id="editYear">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Pages</label>
                     <input type="number" class="form-input" id="editPages" min="1">
                 </div>
                 <div class="form-group">
+                    <label class="form-label">Date Acquired</label>
+                    <input type="text" class="form-input" id="editAcquired">
+                </div>
+                <div class="form-group">
                     <label class="form-label">Status</label>
                     <select class="form-select" id="editStatus">
-                        <option value="available">Available</option>
-                        <option value="borrowed">Borrowed</option>
-                        <option value="lost">Lost</option>
-                        <option value="damaged">Damaged</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Ongoing">Ongoing</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Purchase Price</label>
-                    <input type="number" class="form-input" id="editPrice" step="0.01" min="0">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Notes</label>
-                    <textarea class="form-textarea" id="editNotes" placeholder="Any additional notes..."></textarea>
-                </div>
+                
                 <div class="form-actions">
                     <button type="button" class="secondary-btn" onclick="closeModal('editModal')">Cancel</button>
                     <button type="submit" class="primary-btn">
@@ -164,5 +126,9 @@
             </div>
         </div>
     </div>
+    <script src="script.js"></script>
+    <script>
+        listBooks();
+    </script>
 </body>
 </html>
